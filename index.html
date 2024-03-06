@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head><title>PMD KG</title>
+<link rel="stylesheet" href="https://unpkg.com/chota@latest">
+<style>
+    :root {
+  --bg-color: #ffffff;
+  --bg-secondary-color: #f3f3f6;
+  --color-primary: #1e73be;
+  --color-lightGrey: #d2d6dd;
+  --color-grey: #747681;
+  --color-darkGrey: #3f4144;
+  --color-error: #d43939;
+  --color-success: #28bd14;
+  --grid-maxWidth: 120rem;
+  --grid-gutter: 2rem;
+  --font-size: 1.6rem;
+  --font-color: #333333;
+  --font-family-sans: sans-serif;
+  --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
+}
+
+body {
+    padding: 50px 50px 50px 50px;
+}
+
+img {
+    max-width:200px;
+    max-height:200px;
+}
+
+.footer {
+  border-top:1px solid grey;
+  margin-top: 150px;
+  padding-top: 30px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+  </style>
+
+<link rel="stylesheet" href="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.css" media="all">
+<script src="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.js"></script>
+
+</head>
+<body>
+  <img src="https://www.materialdigital.de/img/Logo_MaterialDigital.svg">
+    <h1>PMD Knowledge Graph</h1>
+
+    <div id="yasgui"></div>
+
+    <script>
+        const url = window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href;
+        new Yasgui(document.getElementById("yasgui"), {
+            requestConfig: { endpoint: "https://pmdkg.ise.fiz-karlsruhe.de/sparql" },
+            endpointCatalogueOptions: {
+                getData: function () {
+                    return [
+                        { endpoint: "https://pmdkg.ise.fiz-karlsruhe.de/sparql" },
+                    ];
+                },
+                keys: [],
+            }
+        });
+    </script>
+
+<div class="footer">
+  <p>created with <a href="https://www.wikidata.org/wiki/Q316">♥</a> for <a href="https://www.materialdigital.de/">Material Digital</a> by <a href="https://www.fiz-karlsruhe.de/de/forschung/information-service-engineering">FIZ ISE-Group</a></p>
+    <img src="https://www.materialdigital.de/img/brands/BMBF_de.jpg"><br>
+  <a href="https://www.fiz-karlsruhe.de/de/ueber-uns/impressum-rechtliches">Imprint</a>
+</div>
+
+</body>
+</html>
