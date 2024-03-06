@@ -39,6 +39,11 @@ img {
   text-align: center;
 }
 
+.buttons{
+    padding: 20px 0 20px 0;
+}
+
+
   </style>
 
 <link rel="stylesheet" href="https://unpkg.com/@triply/yasgui@4/build/yasgui.min.css" media="all">
@@ -49,11 +54,17 @@ img {
   <img src="https://www.materialdigital.de/img/Logo_MaterialDigital.svg">
     <h1>PMD Knowledge Graph</h1>
 
+    <p>On this page you can explore and query the PMD Knowledge Graph through a public SPARQL interface. For a quick start you can try out some of our prepared queries:</p>
+
+    <div class="buttons">
+        <button id="query1">Count Triples</button> <button id="query2">Show PMDco Classes</button> 
+    </div>
+
     <div id="yasgui"></div>
 
     <script>
         const url = window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href;
-        new Yasgui(document.getElementById("yasgui"), {
+        var yasgui = new Yasgui(document.getElementById("yasgui"), {
             requestConfig: { endpoint: "https://pmdkg.ise.fiz-karlsruhe.de/sparql" },
             endpointCatalogueOptions: {
                 getData: function () {
@@ -64,6 +75,30 @@ img {
                 keys: [],
             }
         });
+
+        var btn = document.getElementById("query1");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "Count triples" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT count(*) WHERE {\n?sub ?pred ?obj .\n}");
+        };
+
+
+        var btn = document.getElementById("query2");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "PMDco Classes" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n?s a <http://www.w3.org/2002/07/owl#Class> .\nfilter regex(str(?s), "https://w3id.org/pmd/co" )\n} order by ?s'
+                );
+
+        };
+        
     </script>
 
 <div class="footer">
