@@ -60,6 +60,8 @@ img {
         <button id="query1">Count Triples</button>
         <button id="query2">Show PMDco Classes</button> 
         <button id="query3">Show All Graphs (Ontologies)</button>  
+        <button id="query4">Federated Query to Matwerk KG</button>  
+        <button id="query5">Class Lookup</button>  
     </div>
 
     <div id="yasgui"></div>
@@ -96,7 +98,7 @@ img {
                 { ...Yasgui.Tab.getDefaults(), name: "PMDco Classes" , }
             );  
             tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
-            tab.setQuery('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n?s a <http://www.w3.org/2002/07/owl#Class> .\nfilter regex(str(?s), "https://w3id.org/pmd/co" )\n} order by ?s'
+            tab.setQuery('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n  ?s a <http://www.w3.org/2002/07/owl#Class> .\n  filter regex(str(?s), "https://w3id.org/pmd/co" )\n} order by ?s'
                 );
 
         };
@@ -112,7 +114,29 @@ img {
 
         };
 
+        var btn = document.getElementById("query4");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "Matwerk" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery("SELECT * WHERE {\n   SERVICE <https://demo.fiz-karlsruhe.de/sparql> {    # Matwerk KG\n   ?sub ?pred ?obj .\n  } \n} LIMIT 10");
+        };
+
         
+        var btn = document.getElementById("query5");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "Lookup" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery('PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n  graph ?g {\n    ?s a <http://www.w3.org/2002/07/owl#Class> .\n    ?s rdfs:label ?lab .\n    filter regex( ?lab, "force", "i" )\n  }\n} order by ?lab');
+        };
+
+
+
         
     </script>
 
