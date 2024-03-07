@@ -57,7 +57,9 @@ img {
     <p>On this page you can explore and query the PMD Knowledge Graph through a public SPARQL interface. For a quick start you can try out some of our prepared queries:</p>
 
     <div class="buttons">
-        <button id="query1">Count Triples</button> <button id="query2">Show PMDco Classes</button> 
+        <button id="query1">Count Triples</button>
+        <button id="query2">Show PMDco Classes</button> 
+        <button id="query3">Show All Graphs (Ontologies)</button>  
     </div>
 
     <div id="yasgui"></div>
@@ -98,6 +100,19 @@ img {
                 );
 
         };
+
+        var btn = document.getElementById("query3");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "All Graphs" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery('select  distinct ?g where { graph ?g {?s ?p ?o}}');
+
+        };
+
+        
         
     </script>
 
