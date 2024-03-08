@@ -43,6 +43,10 @@ img {
     padding: 20px 0 20px 0;
 }
 
+button{
+    margin: 4px;
+}
+
 
   </style>
 
@@ -59,9 +63,10 @@ img {
     <div class="buttons">
         <button id="query1">Count Triples</button>
         <button id="query2">Show PMDco Classes</button> 
-        <button id="query3">Show All Graphs (Ontologies)</button>  
-        <button id="query4">Federated Query to Matwerk KG</button>  
+        <button id="query3">Show All Graphs (Ontologies)</button>          
         <button id="query5">Class Lookup</button>  
+        <button id="query6">Show ProcessingNodes w. Inferencing</button>  
+        <button id="query4">Federated Query to Matwerk KG</button>  
     </div>
 
     <div id="yasgui"></div>
@@ -87,7 +92,7 @@ img {
                 { ...Yasgui.Tab.getDefaults(), name: "Count triples" , }
             );  
             tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
-            tab.setQuery("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT count(*) WHERE {\n?sub ?pred ?obj .\n}");
+            tab.setQuery("SELECT count(*) WHERE {\n?sub ?pred ?obj .\n}");
         };
 
 
@@ -98,7 +103,7 @@ img {
                 { ...Yasgui.Tab.getDefaults(), name: "PMDco Classes" , }
             );  
             tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
-            tab.setQuery('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n  ?s a <http://www.w3.org/2002/07/owl#Class> .\n  filter regex(str(?s), "https://w3id.org/pmd/co" )\n} order by ?s'
+            tab.setQuery('SELECT DISTINCT * WHERE {\n  ?s a <http://www.w3.org/2002/07/owl#Class> .\n  filter regex(str(?s), "https://w3id.org/pmd/co" )\n} order by ?s'
                 );
 
         };
@@ -135,6 +140,15 @@ img {
             tab.setQuery('PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT * WHERE {\n  graph ?g {\n    ?s a <http://www.w3.org/2002/07/owl#Class> .\n    ?s rdfs:label ?lab .\n    filter regex( ?lab, "force", "i" )\n  }\n} order by ?lab');
         };
 
+        var btn = document.getElementById("query6");
+        btn.onclick = function(){
+            var tab = yasgui.addTab(
+                true, // set as active tab
+                { ...Yasgui.Tab.getDefaults(), name: "Proc Nodes" , }
+            );  
+            tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
+            tab.setQuery('DEFINE  input:inference  "pmdco"\nSELECT DISTINCT * WHERE {\n  ?f a <https://w3id.org/pmd/co/ProcessingNode> .\n}');
+        };
 
 
         
