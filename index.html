@@ -126,7 +126,7 @@ button{
                 { ...Yasgui.Tab.getDefaults(), name: "Matwerk" , }
             );  
             tab.setEndpoint("https://pmdkg.ise.fiz-karlsruhe.de/sparql")
-            tab.setQuery("SELECT * WHERE {\n   SERVICE <https://demo.fiz-karlsruhe.de/sparql> {    # Matwerk KG\n   ?sub ?pred ?obj .\n  } \n} LIMIT 10");
+            tab.setQuery("SELECT * WHERE {\n   SERVICE <https://demo.fiz-karlsruhe.de/sparql> {    # Matwerk KG\n   ?sub ?pred ?obj .\n  }\n   ?obj rdfs:subClassOf <https://w3id.org/pmd/co/ValueObject> .\n} ");
         };
 
         
